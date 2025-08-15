@@ -48,3 +48,8 @@ class BorrowingCreateSerializer(serializers.ModelSerializer):
         book.save()
         return super().create(validated_data)
 
+
+class BorrowingReturnSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Borrowing
+        fields = []
