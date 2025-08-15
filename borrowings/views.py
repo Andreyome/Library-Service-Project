@@ -1,5 +1,10 @@
 from datetime import date
 
+from drf_spectacular.utils import (
+    extend_schema,
+    OpenApiResponse,
+    extend_schema_view,
+)
 from rest_framework import mixins, viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -14,6 +19,21 @@ from borrowings.serializers import (
 )
 
 
+@extend_schema_view(
+    list=extend_schema(
+        summary="List borrowings",
+        responses=BorrowingSerializer,
+    ),
+    retrieve=extend_schema(
+        summary="Retrieve borrowing details",
+        responses=BorrowingDetailSerializer,
+    ),
+    create=extend_schema(
+        summary="Create a borrowing (inventory decreases by 1)",
+        request=BorrowingCreateSerializer,
+        responses=BorrowingDetailSerializer,
+    ),
+)
 class BorrowingViewSet(
     mixins.CreateModelMixin,
     mixins.ListModelMixin,
@@ -34,6 +54,11 @@ class BorrowingViewSet(
             return BorrowingReturnSerializer
         return BorrowingSerializer
 
+    @extend_schema(
+        summary="Return a borrowed book (inventory increases by 1)",
+        description="Sets `actual_return_date` to today. Available only to the borrowing owner or admin.",
+        responses={200: OpenApiResponse(description="Book successfully returned")},
+    )
     @action(detail=True, methods=["post"], url_path="return")
     def return_book(self, request, pk=None):
         borrowing = self.get_object()
