@@ -1,22 +1,24 @@
 from datetime import date
 
-from django.shortcuts import render
 from rest_framework import mixins, viewsets, status
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 
 from books.permissions import IsAdminOrReadOnly
 from borrowings.models import Borrowing
-from borrowings.serializers import BorrowingSerializer, BorrowingDetailSerializer, BorrowingCreateSerializer, \
-    BorrowingReturnSerializer
+from borrowings.serializers import (
+    BorrowingSerializer,
+    BorrowingDetailSerializer,
+    BorrowingCreateSerializer,
+    BorrowingReturnSerializer,
+)
 
 
 class BorrowingViewSet(
     mixins.CreateModelMixin,
     mixins.ListModelMixin,
     mixins.RetrieveModelMixin,
-    viewsets.GenericViewSet
+    viewsets.GenericViewSet,
 ):
     queryset = Borrowing.objects.select_related("user", "book")
     permission_classes = (IsAdminOrReadOnly,)
@@ -36,7 +38,9 @@ class BorrowingViewSet(
     def return_book(self, request, pk=None):
         borrowing = self.get_object()
         if borrowing.actual_return_date:
-            return Response({"detail": "Book already returned."}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"detail": "Book already returned."}, status=status.HTTP_400_BAD_REQUEST
+            )
 
         borrowing.actual_return_date = date.today()
         borrowing.book.inventory += 1
