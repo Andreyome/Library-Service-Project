@@ -4,7 +4,7 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 from books.permissions import IsAdminOrReadOnly
 from borrowings.models import Borrowing
-from borrowings.serializers import BorrowingSerializer, BorrowingDetailSerializer
+from borrowings.serializers import BorrowingSerializer, BorrowingDetailSerializer, BorrowingCreateSerializer
 
 
 class BorrowingViewSet(
@@ -21,4 +21,6 @@ class BorrowingViewSet(
             return BorrowingSerializer
         if self.action == "retrieve":
             return BorrowingDetailSerializer
+        if self.action == "create":
+            return BorrowingCreateSerializer
         return BorrowingSerializer
