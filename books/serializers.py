@@ -6,20 +6,20 @@ from books.models import Book
 class BookSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
-        fields = ['id', 'title', 'author', 'cover', 'inventory', 'daily_fee']
+        fields = ["id", "title", "author", "cover", "inventory", "daily_fee"]
 
 
 class BookListSerializer(BookSerializer):
-    cover = serializers.CharField(source='get_cover_display', read_only=True)
+    cover = serializers.CharField(source="get_cover_display", read_only=True)
 
     class Meta:
         model = Book
-        fields = ['id', 'title', 'author', 'cover', 'inventory', 'daily_fee']
+        fields = ["id", "title", "author", "cover", "inventory", "daily_fee"]
 
 
 class BookDetailSerializer(BookSerializer):
-    cover = serializers.CharField(source='get_cover_display', read_only=True)
+    cover = serializers.CharField(source="get_cover_display", read_only=True)
 
     class Meta:
         model = Book
-        fields = ['id', 'title', 'author', 'cover', 'inventory', 'daily_fee']
+        fields = ["id", "title", "author", "cover", "inventory", "daily_fee"]

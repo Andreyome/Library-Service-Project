@@ -1,9 +1,11 @@
 from django.db import models
 
+
 class Book(models.Model):
     class Choices(models.TextChoices):
         HARD = "HARD", "Hard cover"
         SOFT = "SOFT", "Soft cover"
+
     title = models.CharField(max_length=100)
     author = models.CharField(max_length=100)
     cover = models.CharField(max_length=4, choices=Choices.choices)
