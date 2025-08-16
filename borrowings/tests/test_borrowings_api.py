@@ -76,3 +76,19 @@ class AuthenticatedAdminBorrowingsAPITest(TestCase):
             borrowing.expected_return_date, payload["expected_return_date"]
         )
         self.assertEqual(borrowing.borrow_date, date.today())
+
+    def test_return_borrowing(self):
+        book = sample_book()
+        payload = {
+            "expected_return_date": date.today(),
+            "book": book.id,
+        }
+        response = self.client.post(BORROWINGS_URL, payload)
+        print(response.data)
+        url = reverse(
+            "borrowings:borrowing-return-book",
+            kwargs={"pk": response.data["id"]},
+        )
+        result = self.client.post(url)
+        print(result.data)
+        self.assertEqual(result.status_code, status.HTTP_200_OK)
