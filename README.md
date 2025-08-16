@@ -51,3 +51,12 @@ Run the server
 | `/api/borrowings/{id}/return/` | POST     | Return a borrowed book by operation ID   |
 | `/api/users/`                  | GET/POST | User registration & list users           |
 | `/api/auth/`                   | POST     | User authentication (JWT, session, etc.) |
+
+### DOCKER
+1. Build and start the containers
+
+`docker-compose up --build`
+
+2. Access the application
+
+Django app: http://localhost:8000
